@@ -1,5 +1,7 @@
 # SAMESAME
 
+<img src="https://raw.githubusercontent.com/Bodhicypha/SAMESAME/refs/heads/main/SAMESAME.svg" alt="SAMESAME" width="48">
+
 SAMESAME is a minimal ERC-20 memecoin deployed on Ethereum.
 
 It has no roadmap, no utility claims, and no promises — only supply, code, and the meme.
