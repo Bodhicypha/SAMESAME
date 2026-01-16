@@ -7,7 +7,7 @@ Same same.
 
 ## Contract
 - Network: Ethereum
-- Address: 0xYOUR_CONTRACT_ADDRESS
+- Address: 0xAe69cC1fc295337EaaB6678D7Dd7eEBe3C7385Bb
 - Decimals: 18
 - Total Supply: YOUR_SUPPLY
 
