@@ -9,7 +9,7 @@ Same same.
 - Network: Ethereum
 - Address: 0xAe69cC1fc295337EaaB6678D7Dd7eEBe3C7385Bb
 - Decimals: 18
-- Total Supply: YOUR_SUPPLY
+- Total Supply: 10000000
 
 ## Disclaimer
 This project is provided as-is with no guarantees.
