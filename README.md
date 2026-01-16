@@ -1,0 +1,16 @@
+# SAMESAME
+
+SAMESAME is a minimal ERC-20 memecoin deployed on Ethereum.
+
+It has no roadmap, no utility claims, and no promises — only supply, code, and the meme.
+Same same.
+
+## Contract
+- Network: Ethereum
+- Address: 0xYOUR_CONTRACT_ADDRESS
+- Decimals: 18
+- Total Supply: YOUR_SUPPLY
+
+## Disclaimer
+This project is provided as-is with no guarantees.
+Not financial advice.
