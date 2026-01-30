@@ -1,54 +1,395 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SAMESAME</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAMESAME — ERC-20 Memecoin on Ethereum</title>
+  <meta name="description" content="SAMESAME is a fixed-supply ERC-20 memecoin on Ethereum. No utility, no roadmap, no investment purpose. A simple token experiment." />
+  <meta name="robots" content="index,follow" />
+
   <style>
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: #0b0b0f;
-      color: #f2f2f2;
+    :root{
+      --bg:#0b0b10;
+      --panel:#121222;
+      --panel2:#16162a;
+      --text:#f2f2f7;
+      --muted:rgba(242,242,247,.75);
+      --faint:rgba(242,242,247,.55);
+      --border:rgba(242,242,247,.12);
+      --accent:#8ab4ff;
+      --accent2:#a5ffd6;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 980px;
     }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 24px;
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(138,180,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(165,255,214,.10), transparent 55%),
+        radial-gradient(700px 500px at 40% 120%, rgba(138,180,255,.10), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      letter-spacing:.2px;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 16px;
+
+    a{color:inherit; text-decoration:none}
+    a:hover{opacity:.92}
+
+    .wrap{max-width:var(--max); margin:0 auto; padding:40px 20px 80px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      margin-bottom:34px;
     }
-    h2 {
-      margin-top: 48px;
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      overflow:hidden;
     }
-    p {
-      line-height: 1.6;
-      opacity: 0.9;
+    .logo img{width:26px; height:26px; display:block}
+    .brand h1{
+      font-size:14px; margin:0; font-weight:700; letter-spacing:.8px;
     }
-    footer {
-      margin-top: 80px;
-      opacity: 0.6;
-      font-size: 0.9rem;
+    .brand .sub{font-size:12px; margin:2px 0 0; color:var(--muted)}
+    .nav{display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end}
+    .pill{
+      font-size:12px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(6px);
     }
+
+    .hero{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius2);
+      padding:34px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 200px at 30% 0%, rgba(138,180,255,.18), transparent 65%);
+      pointer-events:none;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:22px;
+      position:relative;
+    }
+    @media (max-width: 860px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+
+    .headline{
+      margin:0 0 10px;
+      font-size: clamp(28px, 5vw, 46px);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+    .tagline{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size: 15px;
+      line-height:1.6;
+      max-width: 58ch;
+    }
+    .bullets{
+      margin:0;
+      padding-left: 18px;
+      color:var(--muted);
+      font-size: 14px;
+      line-height:1.7;
+    }
+    .cta-row{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top:18px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:11px 14px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      font-size: 13px;
+      font-weight: 650;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.primary{
+      border-color: rgba(138,180,255,.35);
+      background: linear-gradient(180deg, rgba(138,180,255,.18), rgba(138,180,255,.06));
+    }
+    .btn .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(138,180,255,.14);
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      padding:18px;
+    }
+    .side{
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+    .label{
+      font-size:12px;
+      color:var(--faint);
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      margin:0 0 8px;
+    }
+    .kv{
+      display:grid;
+      gap:10px;
+    }
+    .kv .row{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:10px;
+      align-items:start;
+      font-size: 13px;
+      line-height:1.55;
+    }
+    .kv .key{color:var(--faint)}
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      word-break: break-all;
+      color: rgba(242,242,247,.9);
+    }
+    .copy{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .copy button{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 12px;
+      padding:8px 10px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .copy button:hover{background: rgba(255,255,255,.06)}
+    .hint{margin:8px 0 0; color:var(--faint); font-size:12px; line-height:1.5}
+
+    .section{
+      margin-top:26px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){
+      .section{grid-template-columns:1fr}
+    }
+    .section h2{
+      margin:0 0 8px;
+      font-size: 16px;
+      letter-spacing:-.2px;
+    }
+    .section p{
+      margin:0;
+      color:var(--muted);
+      font-size: 14px;
+      line-height:1.7;
+    }
+
+    .footer{
+      margin-top:34px;
+      padding-top:18px;
+      border-top:1px solid var(--border);
+      color:var(--faint);
+      font-size:12px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .tiny-links{display:flex; gap:12px; flex-wrap:wrap}
+    .tiny-links a{color:var(--faint); text-decoration:underline; text-decoration-color: rgba(242,242,247,.25)}
+    .tiny-links a:hover{color:var(--text)}
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>SAMESAME</h1>
-    <p>We are all different, but deep down, the same!</p>
+  <div class="wrap">
 
-    <h2>About the Token</h2>
-    <p>
-      SAMESAME is a new MEME bases, ERC-20 token deployed on the Ethereum blockchain.
-      It has a fixed supply and does not claim any known utility, long-range roadmap, or intrinsic investment purpose other than to exist as a way to participate in crypto.
-      The project is provided as-is as a simple token experiment by one human developer with an interest in the crypto markets and their long-term trajectory.
-    </p>
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Put your logo file in the repo root as logo.svg or logo.png -->
+          <img src="logo.svg" alt="" onerror="this.style.display='none'; this.parentElement.textContent='SS'; this.parentElement.style.fontWeight='800';" />
+        </div>
+        <div>
+          <h1>SAMESAME</h1>
+          <div class="sub">ERC-20 memecoin on Ethereum</div>
+        </div>
+      </div>
 
-    <footer>
-      <p>This is NOT financial advice. Investing in any Memecoin is an inherent risk and could result in possible financial losses. Be smart, be real, be samesame.</p>
-    </footer>
+      <div class="nav">
+        <!-- Replace the href values below with your real links -->
+        <a class="pill" href="https://etherscan.io/token/0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">Etherscan</a>
+        <a class="pill" href="https://app.uniswap.org/#/swap?outputCurrency=0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">Uniswap</a>
+        <a class="pill" href="https://github.com/Bodhicypha/SAMESAME" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="pill" href="https://x.com/YOUR_HANDLE" target="_blank" rel="noreferrer">X</a>
+        <a class="pill" href="https://discord.gg/YOUR_INVITE" target="_blank" rel="noreferrer">Discord</a>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <h2 class="headline">Different humans.<br/>Same humans.</h2>
+          <p class="tagline">
+            SAMESAME is a fixed-supply ERC-20 memecoin deployed on Ethereum.
+            It does not claim utility, governance, a roadmap, or investment purpose.
+            It exists as a simple, transparent token experiment.
+          </p>
+
+          <ul class="bullets">
+            <li>Simple and documented: website + GitHub + on-chain links.</li>
+            <li>Built for clarity and calm, not hype.</li>
+            <li>Provided as-is. Nothing here is financial advice.</li>
+          </ul>
+
+          <div class="cta-row">
+            <a class="btn primary" href="https://etherscan.io/token/0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">
+              <span class="dot"></span> View token on Etherscan
+            </a>
+            <a class="btn" href="https://app.uniswap.org/#/swap?outputCurrency=0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">
+              Swap on Uniswap
+            </a>
+          </div>
+        </div>
+
+        <!-- Key Info Card -->
+        <div class="side">
+          <div class="card">
+            <div class="label">Token Details</div>
+            <div class="kv">
+              <div class="row">
+                <div class="key">Network</div>
+                <div>Ethereum</div>
+              </div>
+              <div class="row">
+                <div class="key">Type</div>
+                <div>ERC-20 (fixed supply)</div>
+              </div>
+              <div class="row">
+                <div class="key">Contract</div>
+                <div class="copy">
+                  <span class="mono" id="contract">0xYOUR_CONTRACT_ADDRESS</span>
+                  <button type="button" onclick="copyText('contract')">Copy</button>
+                </div>
+                <div class="hint">Use this address to avoid fake tokens.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="label">Project Intent</div>
+            <p>
+              SAMESAME is a cultural memecoin created to document a minimal ERC-20 deployment and observe how tokens are discovered,
+              shared, and discussed in open networks — without utility claims or promises.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="label">Status</div>
+            <p class="hint" style="margin:0;">
+              Token info and links are provided for transparency. If any link looks wrong, treat it as suspicious.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-column info blocks -->
+    <div class="section">
+      <div class="card">
+        <h2>What SAMESAME is</h2>
+        <p>
+          A simple ERC-20 memecoin with a fixed supply, deployed on Ethereum.
+          The point is clarity: one page, a repo, and on-chain references that anyone can verify.
+        </p>
+      </div>
+      <div class="card">
+        <h2>What SAMESAME is not</h2>
+        <p>
+          Not a promise of future development. Not governance. Not an investment product.
+          This is a token experiment presented as-is, with no guarantees.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="y"></span> SAMESAME · Not financial advice.</div>
+      <div class="tiny-links">
+        <a href="https://github.com/Bodhicypha/SAMESAME" target="_blank" rel="noreferrer">Repository</a>
+        <a href="https://etherscan.io/token/0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">Token</a>
+        <a href="https://app.uniswap.org/#/swap?outputCurrency=0xYOUR_CONTRACT_ADDRESS" target="_blank" rel="noreferrer">Swap</a>
+      </div>
+    </div>
+
   </div>
+
+  <script>
+    // Set year
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Copy helper
+    function copyText(id){
+      const el = document.getElementById(id);
+      const text = el ? el.textContent.trim() : "";
+      if(!text) return;
+
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(()=>flashCopied());
+      } else {
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta);
+        flashCopied();
+      }
+    }
+
+    function flashCopied(){
+      // Minimal feedback (no popups)
+      const prev = document.title;
+      document.title = "Copied ✓";
+      setTimeout(()=>{ document.title = prev; }, 900);
+    }
+  </script>
 </body>
 </html>
